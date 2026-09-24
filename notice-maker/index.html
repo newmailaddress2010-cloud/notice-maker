@@ -1,10 +1,11 @@
+```html
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>小さなお店のお知らせ作成ツール</title>
+<title>小さなお店の情報更新ツール</title>
 
 <style>
 
@@ -14,15 +15,23 @@
 
 body {
     margin: 0;
-    font-family: sans-serif;
-    background: #f3f4f6;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+    background: #f4f5f7;
     color: #333;
+    line-height: 1.7;
 }
 
 header {
     background: #222;
     color: white;
-    padding: 40px 20px;
+    padding: 45px 20px;
     text-align: center;
 }
 
@@ -34,20 +43,19 @@ header h1 {
 header p {
     margin: 0;
     color: #ddd;
-    line-height: 1.7;
 }
 
 .container {
-    max-width: 900px;
+    max-width: 1000px;
     margin: 30px auto;
     padding: 0 20px;
 }
 
 .card {
     background: white;
+    border-radius: 12px;
     padding: 30px;
     margin-bottom: 25px;
-    border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
@@ -55,9 +63,12 @@ h2 {
     margin-top: 0;
 }
 
+h3 {
+    margin-top: 0;
+}
+
 .description {
     color: #666;
-    line-height: 1.7;
 }
 
 label {
@@ -71,28 +82,38 @@ input,
 textarea,
 select {
     width: 100%;
-    padding: 12px;
+    padding: 13px;
     border: 1px solid #ccc;
-    border-radius: 6px;
+    border-radius: 7px;
     font-size: 16px;
     font-family: inherit;
+    background: white;
 }
 
 textarea {
-    min-height: 110px;
+    min-height: 120px;
     resize: vertical;
 }
 
-select {
-    background: white;
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: #555;
+}
+
+.two-column {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
 }
 
 button {
     width: 100%;
-    padding: 14px;
-    margin-top: 12px;
+    padding: 15px;
+    margin-top: 15px;
     border: none;
-    border-radius: 6px;
+    border-radius: 7px;
     background: #222;
     color: white;
     font-size: 16px;
@@ -103,8 +124,24 @@ button:hover {
     background: #444;
 }
 
+.save-button {
+    background: #315c3a;
+}
+
+.save-button:hover {
+    background: #24482d;
+}
+
+.clear-button {
+    background: #eee;
+    color: #444;
+}
+
+.clear-button:hover {
+    background: #ddd;
+}
+
 .copy-button {
-    margin-top: 8px;
     background: #666;
 }
 
@@ -112,101 +149,139 @@ button:hover {
     background: #444;
 }
 
-#result {
+.result {
     display: none;
 }
 
-.output {
-    margin-top: 30px;
-}
-
-.output h3 {
-    margin-bottom: 8px;
-}
-
-.output textarea {
-    min-height: 160px;
-    background: #fafafa;
-    line-height: 1.7;
-}
-
-.notice {
+.output-box {
     border: 1px solid #ddd;
     border-radius: 10px;
+    margin-top: 20px;
     overflow: hidden;
 }
 
-.notice-header {
-    background: #222;
-    color: white;
-    padding: 25px;
+.output-header {
+    background: #f5f5f5;
+    padding: 14px 18px;
+    border-bottom: 1px solid #ddd;
+    font-weight: bold;
 }
 
-.notice-header h2 {
-    margin: 0 0 10px;
-}
-
-.notice-header p {
-    margin: 0;
-    color: #ddd;
-}
-
-.notice-body {
-    padding: 25px;
-}
-
-.info {
-    line-height: 1.8;
-    margin: 12px 0;
-}
-
-.change {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    margin: 30px 0;
-}
-
-.change-item {
-    flex: 1;
-    border: 1px solid #ddd;
-    padding: 20px;
-    text-align: center;
-    border-radius: 8px;
-}
-
-.change-item small {
-    color: #777;
-}
-
-.change-item h3 {
-    margin-bottom: 0;
-}
-
-.arrow {
-    font-size: 28px;
-}
-
-.note {
-    background: #f3f4f6;
+.output-content {
     padding: 18px;
-    border-radius: 6px;
-    white-space: pre-wrap;
-    line-height: 1.7;
 }
 
-.field {
-    display: none;
+.output-content textarea {
+    min-height: 180px;
+    background: #fafafa;
 }
 
-.message {
-    margin-top: 8px;
-    color: #16803c;
+.html-output textarea {
+    min-height: 260px;
+    font-family: Consolas, Monaco, monospace;
+    font-size: 14px;
+}
+
+.success {
+    color: #26713a;
     font-size: 14px;
     min-height: 20px;
+    margin-top: 7px;
 }
 
-@media (max-width: 600px) {
+.error {
+    color: #b42318;
+    font-size: 14px;
+    min-height: 20px;
+    margin-top: 7px;
+}
+
+.change-box {
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.change-row {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    gap: 15px;
+    padding: 9px 0;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.change-row:last-child {
+    border-bottom: none;
+}
+
+.change-label {
+    font-weight: bold;
+    color: #666;
+}
+
+.check-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.check-list li {
+    padding: 12px 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.check-list li:last-child {
+    border-bottom: none;
+}
+
+.check-list input {
+    width: auto;
+    margin-right: 10px;
+}
+
+.warning {
+    background: #fff8e6;
+    border: 1px solid #ead9a3;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.info-box {
+    background: #f3f4f6;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    color: #555;
+    font-size: 14px;
+}
+
+.current-info {
+    background: #fafafa;
+    border: 1px solid #ddd;
+    padding: 18px;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+.current-info p {
+    margin: 7px 0;
+}
+
+.status-box {
+    background: #f6f7f8;
+    border: 1px solid #ddd;
+    padding: 12px 15px;
+    border-radius: 7px;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #555;
+}
+
+@media (max-width: 700px) {
 
     header h1 {
         font-size: 24px;
@@ -216,12 +291,13 @@ button:hover {
         padding: 20px;
     }
 
-    .change {
-        flex-direction: column;
+    .two-column {
+        grid-template-columns: 1fr;
     }
 
-    .arrow {
-        transform: rotate(90deg);
+    .change-row {
+        grid-template-columns: 1fr;
+        gap: 3px;
     }
 
 }
@@ -235,11 +311,10 @@ button:hover {
 
 <header>
 
-    <h1>小さなお店のお知らせ作成ツール</h1>
+    <h1>小さなお店の情報更新ツール</h1>
 
     <p>
-        お知らせの種類を選んで入力するだけ。<br>
-        ホームページ・Google・LINE・SNSなどに使える文章をまとめて作ります。
+        お店の情報を一度登録すれば、変更時の掲載作業をまとめて整理できます。
     </p>
 
 </header>
@@ -249,505 +324,475 @@ button:hover {
 <div class="container">
 
 
-    <div class="card">
+<!-- =========================
+     店舗情報
+========================= -->
 
-        <h2>お知らせを作る</h2>
+<div class="card">
 
-        <p class="description">
-            まず、お知らせの種類を選んでください。
-            種類に合わせて、必要な入力項目が表示されます。
-        </p>
+    <h2>① お店の基本情報</h2>
 
-
-
-        <label>お知らせの種類</label>
-
-        <select id="noticeType" onchange="changeType()">
-
-            <option value="営業時間変更">
-                営業時間変更
-            </option>
-
-            <option value="臨時休業">
-                臨時休業
-            </option>
-
-            <option value="定休日変更">
-                定休日変更
-            </option>
-
-            <option value="料金変更">
-                料金変更
-            </option>
-
-            <option value="移転">
-                移転
-            </option>
-
-            <option value="新サービス">
-                新サービス開始
-            </option>
-
-            <option value="その他">
-                その他のお知らせ
-            </option>
-
-        </select>
+    <p class="description">
+        お店の基本情報を登録してください。
+        保存すると、このブラウザに情報が記録されます。
+    </p>
 
 
+    <label>店名・会社名</label>
 
-        <label>店名・会社名</label>
-
-        <input
-            id="shopName"
-            placeholder="例：○○美容室"
-        >
-
-
-
-        <label>お知らせタイトル</label>
-
-        <input
-            id="title"
-            value="営業時間変更のお知らせ"
-        >
+    <input
+        id="shopName"
+        type="text"
+        placeholder="例：○○美容室"
+    >
 
 
+    <label>住所</label>
 
-        <!-- 営業時間変更 -->
+    <input
+        id="address"
+        type="text"
+        placeholder="例：神奈川県○○市○○1-2-3"
+    >
 
-        <div
-            class="field"
-            id="businessField"
-        >
 
-            <label>変更日</label>
+    <div class="two-column">
+
+        <div>
+
+            <label>電話番号</label>
 
             <input
-                id="businessDate"
-                type="date"
-            >
-
-
-            <label>変更前の営業時間</label>
-
-            <input
-                id="businessBefore"
-                placeholder="例：9:00～18:00"
-            >
-
-
-            <label>変更後の営業時間</label>
-
-            <input
-                id="businessAfter"
-                placeholder="例：10:00～17:00"
+                id="phone"
+                type="text"
+                placeholder="例：044-123-4567"
             >
 
         </div>
 
 
+        <div>
 
-        <!-- 臨時休業 -->
-
-        <div
-            class="field"
-            id="closedField"
-        >
-
-            <label>休業日</label>
+            <label>ホームページ</label>
 
             <input
-                id="closedDate"
-                type="date"
+                id="website"
+                type="text"
+                placeholder="https://example.com"
             >
 
+        </div>
 
-            <label>営業再開予定</label>
+    </div>
+
+
+    <div class="two-column">
+
+        <div>
+
+            <label>営業時間</label>
 
             <input
-                id="closedAfter"
-                placeholder="例：10月5日より通常営業"
+                id="businessHours"
+                type="text"
+                placeholder="例：10:00〜19:00"
             >
 
         </div>
 
 
+        <div>
 
-        <!-- 定休日 -->
-
-        <div
-            class="field"
-            id="holidayField"
-        >
-
-            <label>変更日</label>
+            <label>定休日</label>
 
             <input
-                id="holidayDate"
-                type="date"
-            >
-
-
-            <label>現在の定休日</label>
-
-            <input
-                id="holidayBefore"
+                id="regularHoliday"
+                type="text"
                 placeholder="例：毎週火曜日"
             >
 
-
-            <label>変更後の定休日</label>
-
-            <input
-                id="holidayAfter"
-                placeholder="例：毎週月曜日"
-            >
-
         </div>
-
-
-
-        <!-- 料金 -->
-
-        <div
-            class="field"
-            id="priceField"
-        >
-
-            <label>変更日</label>
-
-            <input
-                id="priceDate"
-                type="date"
-            >
-
-
-            <label>現在の料金</label>
-
-            <input
-                id="priceBefore"
-                placeholder="例：カット 4,000円"
-            >
-
-
-            <label>変更後の料金</label>
-
-            <input
-                id="priceAfter"
-                placeholder="例：カット 4,500円"
-            >
-
-        </div>
-
-
-
-        <!-- 移転 -->
-
-        <div
-            class="field"
-            id="moveField"
-        >
-
-            <label>移転日</label>
-
-            <input
-                id="moveDate"
-                type="date"
-            >
-
-
-            <label>現在の住所</label>
-
-            <input
-                id="moveBefore"
-                placeholder="例：東京都○○区○○1-1-1"
-            >
-
-
-            <label>新しい住所</label>
-
-            <input
-                id="moveAfter"
-                placeholder="例：東京都○○区○○2-2-2"
-            >
-
-        </div>
-
-
-
-        <!-- 新サービス -->
-
-        <div
-            class="field"
-            id="serviceField"
-        >
-
-            <label>開始日</label>
-
-            <input
-                id="serviceDate"
-                type="date"
-            >
-
-
-            <label>現在のサービス</label>
-
-            <input
-                id="serviceBefore"
-                placeholder="例：通常のカットサービス"
-            >
-
-
-            <label>新しいサービス</label>
-
-            <input
-                id="serviceAfter"
-                placeholder="例：ヘッドスパ付きカット"
-            >
-
-        </div>
-
-
-
-        <!-- その他 -->
-
-        <div
-            class="field"
-            id="otherField"
-        >
-
-            <label>日付</label>
-
-            <input
-                id="otherDate"
-                type="date"
-            >
-
-
-            <label>現在の内容</label>
-
-            <input
-                id="otherBefore"
-                placeholder="必要に応じて入力してください"
-            >
-
-
-            <label>新しい内容</label>
-
-            <input
-                id="otherAfter"
-                placeholder="必要に応じて入力してください"
-            >
-
-        </div>
-
-
-
-        <label>補足・お客様へのメッセージ</label>
-
-        <textarea
-            id="note"
-            placeholder="例：ご不便をおかけしますが、よろしくお願いいたします。"
-        ></textarea>
-
-
-
-        <button onclick="createNotice()">
-            お知らせを作る
-        </button>
 
     </div>
 
 
+    <label>お店の特徴・サービス</label>
 
-    <!-- 結果 -->
-
-    <div class="card" id="result">
-
-        <h2>作成結果</h2>
-
+    <textarea
+        id="features"
+        placeholder="例：駅から徒歩3分。カット、カラー、トリートメントを提供しています。"
+    ></textarea>
 
 
-        <!-- ホームページ -->
+    <button
+        type="button"
+        class="save-button"
+        onclick="saveShopInfo()"
+    >
+        店舗情報を保存する
+    </button>
 
-        <div class="output">
 
-            <h3>① ホームページ用</h3>
+    <div
+        id="saveMessage"
+        class="success"
+    ></div>
 
-            <textarea
-                id="homepageText"
-                readonly
-            ></textarea>
 
-            <button
-                class="copy-button"
-                onclick="copyText('homepageText','homepageMessage')"
-            >
-                文章をコピー
-            </button>
+    <div
+        id="storageStatus"
+        class="status-box"
+    >
+        保存機能を確認しています……
+    </div>
 
-            <div
-                class="message"
-                id="homepageMessage"
-            ></div>
 
+    <div class="current-info">
+
+        <strong>現在保存されている情報</strong>
+
+        <div id="savedInfo">
+            まだ保存されていません。
         </div>
 
+    </div>
 
 
-        <!-- Google -->
+    <button
+        type="button"
+        class="clear-button"
+        onclick="clearShopInfo()"
+    >
+        保存した店舗情報を削除
+    </button>
 
-        <div class="output">
-
-            <h3>② Googleビジネスプロフィール用</h3>
-
-            <textarea
-                id="googleText"
-                readonly
-            ></textarea>
-
-            <button
-                class="copy-button"
-                onclick="copyText('googleText','googleMessage')"
-            >
-                文章をコピー
-            </button>
-
-            <div
-                class="message"
-                id="googleMessage"
-            ></div>
-
-        </div>
+</div>
 
 
 
-        <!-- SNS -->
+<!-- =========================
+     変更内容
+========================= -->
 
-        <div class="output">
+<div class="card">
 
-            <h3>③ LINE・SNS用</h3>
+    <h2>② 変更内容を入力</h2>
 
-            <textarea
-                id="snsText"
-                readonly
-            ></textarea>
-
-            <button
-                class="copy-button"
-                onclick="copyText('snsText','snsMessage')"
-            >
-                文章をコピー
-            </button>
-
-            <div
-                class="message"
-                id="snsMessage"
-            ></div>
-
-        </div>
+    <p class="description">
+        今回変更する内容を選んでください。
+    </p>
 
 
+    <label>変更の種類</label>
 
-        <!-- 丁寧な文章 -->
+    <select id="changeType">
 
-        <div class="output">
+        <option value="営業時間変更">
+            営業時間変更
+        </option>
 
-            <h3>④ お客様向けの丁寧な案内文</h3>
+        <option value="臨時休業">
+            臨時休業
+        </option>
 
-            <textarea
-                id="formalText"
-                readonly
-            ></textarea>
+        <option value="定休日変更">
+            定休日変更
+        </option>
 
-            <button
-                class="copy-button"
-                onclick="copyText('formalText','formalMessage')"
-            >
-                文章をコピー
-            </button>
+        <option value="料金変更">
+            料金変更
+        </option>
 
-            <div
-                class="message"
-                id="formalMessage"
-            ></div>
+        <option value="移転">
+            移転
+        </option>
 
-        </div>
+        <option value="新サービス">
+            新サービス
+        </option>
 
+        <option value="その他">
+            その他
+        </option>
 
-
-        <!-- 完成イメージ -->
-
-        <div class="output">
-
-            <h3>⑤ 完成イメージ</h3>
-
-            <div class="notice">
-
-                <div class="notice-header">
-
-                    <h2 id="resultTitle"></h2>
-
-                    <p id="resultShop"></p>
-
-                </div>
+    </select>
 
 
-                <div class="notice-body">
-
-                    <p class="info">
-                        <strong>お知らせ：</strong>
-                        <span id="resultType"></span>
-                    </p>
+    <div id="changeFields"></div>
 
 
-                    <p class="info">
-                        <strong>日付：</strong>
-                        <span id="resultDate"></span>
-                    </p>
+    <label>今回のお知らせ・変更内容</label>
+
+    <textarea
+        id="changeDetail"
+        placeholder="例：10月1日より営業時間を変更いたします。"
+    ></textarea>
 
 
-                    <div class="change">
+    <label>実施日</label>
 
-                        <div class="change-item">
-
-                            <small>変更前・現在</small>
-
-                            <h3 id="resultBefore"></h3>
-
-                        </div>
+    <input
+        type="date"
+        id="changeDate"
+    >
 
 
-                        <div class="arrow">
-                            →
-                        </div>
+    <button
+        type="button"
+        onclick="createAll()"
+    >
+        掲載内容をまとめて作る
+    </button>
+
+</div>
 
 
-                        <div class="change-item">
 
-                            <small>変更後・新しい内容</small>
+<!-- =========================
+     結果
+========================= -->
 
-                            <h3 id="resultAfter"></h3>
+<div
+    class="card result"
+    id="result"
+>
 
-                        </div>
+    <h2>③ 更新作業の結果</h2>
 
-                    </div>
+    <p class="description">
+        下の文章を必要な場所にコピーしてください。
+    </p>
 
 
-                    <div
-                        class="note"
-                        id="resultNote"
-                    ></div>
 
-                </div>
+    <div class="change-box">
 
+        <h3>今回の変更</h3>
+
+        <div class="change-row">
+
+            <div class="change-label">
+                種類
             </div>
 
+            <div id="previewType"></div>
+
         </div>
 
 
+        <div class="change-row">
+
+            <div class="change-label">
+                実施日
+            </div>
+
+            <div id="previewDate"></div>
+
+        </div>
+
+
+        <div class="change-row">
+
+            <div class="change-label">
+                変更内容
+            </div>
+
+            <div id="previewDetail"></div>
+
+        </div>
+
     </div>
+
+
+
+    <div class="output-box">
+
+        <div class="output-header">
+            今回、更新が必要になりそうな場所
+        </div>
+
+        <div class="output-content">
+
+            <ul
+                class="check-list"
+                id="checkList"
+            ></ul>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="output-box">
+
+        <div class="output-header">
+            ホームページのお知らせ
+        </div>
+
+        <div class="output-content">
+
+            <textarea id="homepageText"></textarea>
+
+            <button
+                type="button"
+                class="copy-button"
+                onclick="copyText('homepageText','messageHomepage')"
+            >
+                コピー
+            </button>
+
+            <div
+                id="messageHomepage"
+                class="success"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="output-box">
+
+        <div class="output-header">
+            Googleビジネスプロフィール用
+        </div>
+
+        <div class="output-content">
+
+            <textarea id="googleText"></textarea>
+
+            <button
+                type="button"
+                class="copy-button"
+                onclick="copyText('googleText','messageGoogle')"
+            >
+                コピー
+            </button>
+
+            <div
+                id="messageGoogle"
+                class="success"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="output-box">
+
+        <div class="output-header">
+            LINE・SNS用
+        </div>
+
+        <div class="output-content">
+
+            <textarea id="lineText"></textarea>
+
+            <button
+                type="button"
+                class="copy-button"
+                onclick="copyText('lineText','messageLine')"
+            >
+                コピー
+            </button>
+
+            <div
+                id="messageLine"
+                class="success"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="output-box">
+
+        <div class="output-header">
+            店頭掲示用
+        </div>
+
+        <div class="output-content">
+
+            <textarea id="posterText"></textarea>
+
+            <button
+                type="button"
+                class="copy-button"
+                onclick="copyText('posterText','messagePoster')"
+            >
+                コピー
+            </button>
+
+            <div
+                id="messagePoster"
+                class="success"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="output-box html-output">
+
+        <div class="output-header">
+            ホームページ貼り付け用HTML
+        </div>
+
+        <div class="output-content">
+
+            <textarea id="htmlText"></textarea>
+
+            <button
+                type="button"
+                class="copy-button"
+                onclick="copyText('htmlText','messageHtml')"
+            >
+                HTMLをコピー
+            </button>
+
+            <div
+                id="messageHtml"
+                class="success"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="info-box">
+
+        <strong>このツールでできること</strong><br>
+
+        お店の情報を一度登録し、
+        営業時間変更や臨時休業などの変更内容を入力すると、
+        ホームページ、Google、LINE・SNS、店頭掲示など、
+        複数の場所に掲載するための内容をまとめて作成できます。
+
+    </div>
+
+
+
+    <div class="warning">
+
+        <strong>公開前に確認してください</strong><br>
+
+        自動作成された文章や更新先は目安です。
+        実際のお店の情報と一致しているか確認してから公開してください。
+
+    </div>
+
+</div>
+
 
 </div>
 
@@ -756,439 +801,982 @@ button:hover {
 <script>
 
 
-/*
-お知らせ種類を変更したとき
-*/
+/* =========================================
+   ページ読み込み
+========================================= */
 
-function changeType() {
+document.addEventListener("DOMContentLoaded", function() {
+
+    checkStorage();
+
+    loadShopInfo();
+
+    updateSavedInfo();
+
+    updateChangeFields();
+
+
+    const changeType =
+        document.getElementById("changeType");
+
+    if (changeType) {
+
+        changeType.addEventListener(
+            "change",
+            updateChangeFields
+        );
+
+    }
+
+});
+
+
+
+/* =========================================
+   保存機能が使えるか確認
+========================================= */
+
+function checkStorage() {
+
+    const status =
+        document.getElementById("storageStatus");
+
+
+    try {
+
+        const testKey =
+            "__shop_update_test__";
+
+        localStorage.setItem(
+            testKey,
+            "test"
+        );
+
+        localStorage.removeItem(
+            testKey
+        );
+
+
+        status.textContent =
+            "保存機能：使用できます。このブラウザに店舗情報を保存できます。";
+
+    } catch (error) {
+
+        console.error(error);
+
+        status.textContent =
+            "保存機能：このブラウザでは保存できません。";
+
+        status.classList.add("error");
+
+    }
+
+}
+
+
+
+/* =========================================
+   変更項目
+========================================= */
+
+function updateChangeFields() {
 
     const type =
-        document.getElementById("noticeType").value;
+        document.getElementById(
+            "changeType"
+        ).value;
 
 
-    const fields = document.querySelectorAll(".field");
+    const area =
+        document.getElementById(
+            "changeFields"
+        );
 
 
-    fields.forEach(function(field) {
-
-        field.style.display = "none";
-
-    });
-
-
-
-    let target = "";
-
-    let defaultTitle = "";
-
+    let html = "";
 
 
     if (type === "営業時間変更") {
 
-        target = "businessField";
+        html = `
 
-        defaultTitle = "営業時間変更のお知らせ";
+            <label>変更前</label>
 
-    }
+            <input
+                id="beforeValue"
+                type="text"
+                placeholder="例：10:00〜19:00"
+            >
 
+            <label>変更後</label>
 
-    else if (type === "臨時休業") {
+            <input
+                id="afterValue"
+                type="text"
+                placeholder="例：12:00〜20:00"
+            >
 
-        target = "closedField";
-
-        defaultTitle = "臨時休業のお知らせ";
+        `;
 
     }
 
 
     else if (type === "定休日変更") {
 
-        target = "holidayField";
+        html = `
 
-        defaultTitle = "定休日変更のお知らせ";
+            <label>変更前</label>
+
+            <input
+                id="beforeValue"
+                type="text"
+                placeholder="例：毎週火曜日"
+            >
+
+            <label>変更後</label>
+
+            <input
+                id="afterValue"
+                type="text"
+                placeholder="例：毎週月曜日"
+            >
+
+        `;
 
     }
 
 
     else if (type === "料金変更") {
 
-        target = "priceField";
+        html = `
 
-        defaultTitle = "料金改定のお知らせ";
+            <label>変更前</label>
+
+            <input
+                id="beforeValue"
+                type="text"
+                placeholder="例：カット 4,000円"
+            >
+
+            <label>変更後</label>
+
+            <input
+                id="afterValue"
+                type="text"
+                placeholder="例：カット 4,500円"
+            >
+
+        `;
 
     }
 
 
     else if (type === "移転") {
 
-        target = "moveField";
+        html = `
 
-        defaultTitle = "移転のお知らせ";
+            <label>現在の住所</label>
+
+            <input
+                id="beforeValue"
+                type="text"
+                placeholder="現在の住所"
+            >
+
+            <label>新しい住所</label>
+
+            <input
+                id="afterValue"
+                type="text"
+                placeholder="移転先の住所"
+            >
+
+        `;
+
+    }
+
+
+    else if (type === "臨時休業") {
+
+        html = `
+
+            <label>休業期間</label>
+
+            <input
+                id="beforeValue"
+                type="text"
+                placeholder="例：10月10日〜10月12日"
+            >
+
+            <label>再開予定</label>
+
+            <input
+                id="afterValue"
+                type="text"
+                placeholder="例：10月13日より通常営業"
+            >
+
+        `;
 
     }
 
 
     else if (type === "新サービス") {
 
-        target = "serviceField";
+        html = `
 
-        defaultTitle = "新サービス開始のお知らせ";
+            <label>新しいサービス名</label>
+
+            <input
+                id="afterValue"
+                type="text"
+                placeholder="例：ヘッドスパを開始します"
+            >
+
+        `;
 
     }
 
 
     else {
 
-        target = "otherField";
+        html = `
 
-        defaultTitle = "お知らせ";
+            <label>変更前・現在の内容</label>
+
+            <input
+                id="beforeValue"
+                type="text"
+                placeholder="必要に応じて入力してください"
+            >
+
+            <label>変更後・新しい内容</label>
+
+            <input
+                id="afterValue"
+                type="text"
+                placeholder="必要に応じて入力してください"
+            >
+
+        `;
 
     }
 
 
-
-    document.getElementById(target).style.display =
-        "block";
-
-
-    document.getElementById("title").value =
-        defaultTitle;
+    area.innerHTML =
+        html;
 
 }
 
 
 
-/*
-最初に営業時間変更を表示
-*/
+/* =========================================
+   店舗情報を保存
+========================================= */
 
-changeType();
+function saveShopInfo() {
+
+    const data = {
+
+        shopName:
+            document.getElementById(
+                "shopName"
+            ).value.trim(),
+
+        address:
+            document.getElementById(
+                "address"
+            ).value.trim(),
+
+        phone:
+            document.getElementById(
+                "phone"
+            ).value.trim(),
+
+        website:
+            document.getElementById(
+                "website"
+            ).value.trim(),
+
+        businessHours:
+            document.getElementById(
+                "businessHours"
+            ).value.trim(),
+
+        regularHoliday:
+            document.getElementById(
+                "regularHoliday"
+            ).value.trim(),
+
+        features:
+            document.getElementById(
+                "features"
+            ).value.trim()
+
+    };
+
+
+    try {
+
+        localStorage.setItem(
+            "shopUpdateToolData",
+            JSON.stringify(data)
+        );
+
+
+        document.getElementById(
+            "saveMessage"
+        ).textContent =
+            "店舗情報を保存しました。";
+
+
+        updateSavedInfo();
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "保存エラー：",
+            error
+        );
+
+
+        document.getElementById(
+            "saveMessage"
+        ).textContent =
+            "保存できませんでした。ブラウザの設定を確認してください。";
+
+    }
+
+}
 
 
 
-/*
-日付を読みやすくする
-*/
+/* =========================================
+   店舗情報を読み込む
+========================================= */
 
-function formatDate(value) {
+function loadShopInfo() {
 
-    if (!value) {
-        return "未定";
+    try {
+
+        const saved =
+            localStorage.getItem(
+                "shopUpdateToolData"
+            );
+
+
+        if (!saved) {
+            return;
+        }
+
+
+        const data =
+            JSON.parse(saved);
+
+
+        document.getElementById(
+            "shopName"
+        ).value =
+            data.shopName || "";
+
+
+        document.getElementById(
+            "address"
+        ).value =
+            data.address || "";
+
+
+        document.getElementById(
+            "phone"
+        ).value =
+            data.phone || "";
+
+
+        document.getElementById(
+            "website"
+        ).value =
+            data.website || "";
+
+
+        document.getElementById(
+            "businessHours"
+        ).value =
+            data.businessHours || "";
+
+
+        document.getElementById(
+            "regularHoliday"
+        ).value =
+            data.regularHoliday || "";
+
+
+        document.getElementById(
+            "features"
+        ).value =
+            data.features || "";
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "読み込みエラー：",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* =========================================
+   保存情報を表示
+========================================= */
+
+function updateSavedInfo() {
+
+    const area =
+        document.getElementById(
+            "savedInfo"
+        );
+
+
+    try {
+
+        const saved =
+            localStorage.getItem(
+                "shopUpdateToolData"
+            );
+
+
+        if (!saved) {
+
+            area.textContent =
+                "まだ保存されていません。";
+
+            return;
+        }
+
+
+        const data =
+            JSON.parse(saved);
+
+
+        area.innerHTML = `
+
+            <p>
+                <strong>店名：</strong>
+                ${escapeHtml(data.shopName || "未登録")}
+            </p>
+
+            <p>
+                <strong>住所：</strong>
+                ${escapeHtml(data.address || "未登録")}
+            </p>
+
+            <p>
+                <strong>電話番号：</strong>
+                ${escapeHtml(data.phone || "未登録")}
+            </p>
+
+            <p>
+                <strong>営業時間：</strong>
+                ${escapeHtml(data.businessHours || "未登録")}
+            </p>
+
+            <p>
+                <strong>定休日：</strong>
+                ${escapeHtml(data.regularHoliday || "未登録")}
+            </p>
+
+        `;
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "保存情報表示エラー：",
+            error
+        );
+
+
+        area.textContent =
+            "保存情報を読み込めませんでした。";
+
+    }
+
+}
+
+
+
+/* =========================================
+   保存情報を削除
+========================================= */
+
+function clearShopInfo() {
+
+    if (
+        !confirm(
+            "保存した店舗情報を削除しますか？"
+        )
+    ) {
+
+        return;
+
+    }
+
+
+    try {
+
+        localStorage.removeItem(
+            "shopUpdateToolData"
+        );
+
+
+        document.getElementById(
+            "shopName"
+        ).value = "";
+
+
+        document.getElementById(
+            "address"
+        ).value = "";
+
+
+        document.getElementById(
+            "phone"
+        ).value = "";
+
+
+        document.getElementById(
+            "website"
+        ).value = "";
+
+
+        document.getElementById(
+            "businessHours"
+        ).value = "";
+
+
+        document.getElementById(
+            "regularHoliday"
+        ).value = "";
+
+
+        document.getElementById(
+            "features"
+        ).value = "";
+
+
+        updateSavedInfo();
+
+
+        document.getElementById(
+            "saveMessage"
+        ).textContent =
+            "保存した店舗情報を削除しました。";
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "削除エラー：",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* =========================================
+   日付
+========================================= */
+
+function formatDate(dateString) {
+
+    if (!dateString) {
+
+        return "指定なし";
+
     }
 
 
     const parts =
-        value.split("-");
+        dateString.split("-");
 
 
-    if (parts.length !== 3) {
-        return value;
-    }
-
-
-    return parts[0] + "年" +
-        Number(parts[1]) + "月" +
-        Number(parts[2]) + "日";
+    return (
+        parts[0] +
+        "年" +
+        Number(parts[1]) +
+        "月" +
+        Number(parts[2]) +
+        "日"
+    );
 
 }
 
 
 
-/*
-お知らせを作る
-*/
+/* =========================================
+   HTMLエスケープ
+========================================= */
 
-function createNotice() {
+function escapeHtml(text) {
+
+    return String(text)
+
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+
+        .replace(
+            /</g,
+            "&lt;"
+        )
+
+        .replace(
+            />/g,
+            "&gt;"
+        )
+
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+
+/* =========================================
+   全部作成
+========================================= */
+
+function createAll() {
+
+    const shopName =
+        document.getElementById(
+            "shopName"
+        ).value.trim();
 
 
     const type =
-        document.getElementById("noticeType").value;
+        document.getElementById(
+            "changeType"
+        ).value;
 
 
-    const shopName =
-        document.getElementById("shopName").value;
+    const detail =
+        document.getElementById(
+            "changeDetail"
+        ).value.trim();
 
 
-    const title =
-        document.getElementById("title").value;
+    const date =
+        document.getElementById(
+            "changeDate"
+        ).value;
 
 
-    const note =
-        document.getElementById("note").value;
+    const beforeElement =
+        document.getElementById(
+            "beforeValue"
+        );
 
 
-
-    let date = "";
-
-    let before = "";
-
-    let after = "";
+    const afterElement =
+        document.getElementById(
+            "afterValue"
+        );
 
 
-
-    /*
-    種類ごとの情報
-    */
-
-    if (type === "営業時間変更") {
-
-        date =
-            document.getElementById("businessDate").value;
-
-        before =
-            document.getElementById("businessBefore").value;
-
-        after =
-            document.getElementById("businessAfter").value;
-
-    }
+    const before =
+        beforeElement
+            ? beforeElement.value.trim()
+            : "";
 
 
-    else if (type === "臨時休業") {
+    const after =
+        afterElement
+            ? afterElement.value.trim()
+            : "";
 
-        date =
-            document.getElementById("closedDate").value;
 
-        before =
-            "通常営業";
+    if (!shopName) {
 
-        after =
-            document.getElementById("closedAfter").value;
+        alert(
+            "店名・会社名を入力してください。"
+        );
+
+        return;
 
     }
 
 
-    else if (type === "定休日変更") {
+    if (!detail && !after) {
 
-        date =
-            document.getElementById("holidayDate").value;
+        alert(
+            "変更内容を入力してください。"
+        );
 
-        before =
-            document.getElementById("holidayBefore").value;
-
-        after =
-            document.getElementById("holidayAfter").value;
+        return;
 
     }
-
-
-    else if (type === "料金変更") {
-
-        date =
-            document.getElementById("priceDate").value;
-
-        before =
-            document.getElementById("priceBefore").value;
-
-        after =
-            document.getElementById("priceAfter").value;
-
-    }
-
-
-    else if (type === "移転") {
-
-        date =
-            document.getElementById("moveDate").value;
-
-        before =
-            document.getElementById("moveBefore").value;
-
-        after =
-            document.getElementById("moveAfter").value;
-
-    }
-
-
-    else if (type === "新サービス") {
-
-        date =
-            document.getElementById("serviceDate").value;
-
-        before =
-            document.getElementById("serviceBefore").value;
-
-        after =
-            document.getElementById("serviceAfter").value;
-
-    }
-
-
-    else {
-
-        date =
-            document.getElementById("otherDate").value;
-
-        before =
-            document.getElementById("otherBefore").value;
-
-        after =
-            document.getElementById("otherAfter").value;
-
-    }
-
 
 
     const displayDate =
         formatDate(date);
 
 
+    let mainChange =
+        after || detail;
 
-    /*
-    ホームページ用
-    */
+
+    if (before && after) {
+
+        mainChange =
+            "変更前：" +
+            before +
+            "\n" +
+            "変更後：" +
+            after;
+
+    }
+
+
+
+    /* =================================
+       ホームページ
+    ================================= */
 
     const homepage =
-`${title}
+`${shopName}より、${type}のお知らせです。
+
+${detail || after}
+
+${before && after
+    ? "変更前：" + before +
+      "\n変更後：" + after
+    : ""}
+
+${date
+    ? "実施日：" + displayDate
+    : ""}
+
+お客様にはご不便をおかけする場合がございますが、
+何卒ご理解くださいますようお願いいたします。
+
+今後とも${shopName}をよろしくお願いいたします。`;
+
+
+
+    /* =================================
+       Google
+    ================================= */
+
+    const google =
+`【${type}のお知らせ】
+
+いつも${shopName}をご利用いただきありがとうございます。
+
+${detail || after}
+
+${before && after
+    ? "変更前：" + before +
+      "\n変更後：" + after
+    : ""}
+
+${date
+    ? "実施日：" + displayDate
+    : ""}
+
+ご利用の際は、あらかじめご確認くださいますようお願いいたします。`;
+
+
+
+    /* =================================
+       LINE・SNS
+    ================================= */
+
+    const line =
+`【${type}のお知らせ】
+
+いつも${shopName}をご利用いただきありがとうございます。
+
+${detail || after}
+
+${before && after
+    ? "変更前：" + before +
+      "\n変更後：" + after
+    : ""}
+
+${date
+    ? "実施日：" + displayDate
+    : ""}
+
+ご利用の際はご確認をお願いいたします。
+
+今後とも${shopName}をよろしくお願いいたします。`;
+
+
+
+    /* =================================
+       店頭掲示
+    ================================= */
+
+    const poster =
+`【${type}のお知らせ】
 
 ${shopName}
 
-【${type}】
+${detail || after}
 
-${displayDate}
+${before && after
+    ? "\n変更前\n" +
+      before +
+      "\n\n変更後\n" +
+      after
+    : ""}
 
-変更前・現在：
-${before}
+${date
+    ? "\n実施日\n" +
+      displayDate
+    : ""}
 
-変更後・新しい内容：
-${after}
-
-${note}`;
-
-
-
-    /*
-    Google用
-    */
-
-    const google =
-`【${title}】
-
-${shopName}からのお知らせです。
-
-${type}
-
-日付：${displayDate}
-
-${before} → ${after}
-
-${note}
-
-ご利用の際は、あらかじめご確認ください。`;
+お客様にはご不便をおかけいたしますが、
+ご理解くださいますようお願いいたします。`;
 
 
 
-    /*
-    LINE・SNS用
-    */
+    /* =================================
+       HTML
+    ================================= */
 
-    const sns =
-`【${title}】
+    const html =
+`<section class="shop-notice">
 
-${shopName}よりお知らせです。
+<h2>${escapeHtml(type)}のお知らせ</h2>
 
-${displayDate}
+<p>
+${escapeHtml(detail || after).replace(/\n/g, "<br>")}
+</p>
 
-${before} → ${after}
+${
+    before && after
+    ?
+`<p>
+<strong>変更前：</strong>
+${escapeHtml(before)}
+<br>
+<strong>変更後：</strong>
+${escapeHtml(after)}
+</p>`
+    :
+    ""
+}
 
-${note}
+${
+    date
+    ?
+`<p>
+<strong>実施日：</strong>
+${escapeHtml(displayDate)}
+</p>`
+    :
+    ""
+}
 
-よろしくお願いいたします。`;
-
-
-
-    /*
-    丁寧な案内文
-    */
-
-    const formal =
-`${shopName}をご利用のお客様へ
-
-このたび、${type}についてお知らせいたします。
-
-日付：${displayDate}
-
-変更前・現在：
-${before}
-
-変更後・新しい内容：
-${after}
-
-${note}
-
+<p>
 お客様にはご不便をおかけする場合がございますが、
-何卒ご理解くださいますようお願いいたします。`;
+何卒ご理解くださいますようお願いいたします。
+</p>
+
+</section>`;
 
 
 
-    /*
-    文章を表示
-    */
+    /* =================================
+       表示
+    ================================= */
 
-    document.getElementById("homepageText").value =
-        homepage;
-
-
-    document.getElementById("googleText").value =
-        google;
-
-
-    document.getElementById("snsText").value =
-        sns;
-
-
-    document.getElementById("formalText").value =
-        formal;
-
-
-
-    /*
-    完成イメージ
-    */
-
-    document.getElementById("resultTitle").textContent =
-        title;
-
-
-    document.getElementById("resultShop").textContent =
-        shopName;
-
-
-    document.getElementById("resultType").textContent =
+    document.getElementById(
+        "previewType"
+    ).textContent =
         type;
 
 
-    document.getElementById("resultDate").textContent =
+    document.getElementById(
+        "previewDate"
+    ).textContent =
         displayDate;
 
 
-    document.getElementById("resultBefore").textContent =
-        before;
+    document.getElementById(
+        "previewDetail"
+    ).textContent =
+        mainChange;
 
 
-    document.getElementById("resultAfter").textContent =
-        after;
+    document.getElementById(
+        "homepageText"
+    ).value =
+        homepage;
 
 
-    document.getElementById("resultNote").textContent =
-        note;
+    document.getElementById(
+        "googleText"
+    ).value =
+        google;
 
 
+    document.getElementById(
+        "lineText"
+    ).value =
+        line;
 
-    /*
-    結果を表示
-    */
 
-    document.getElementById("result").style.display =
+    document.getElementById(
+        "posterText"
+    ).value =
+        poster;
+
+
+    document.getElementById(
+        "htmlText"
+    ).value =
+        html;
+
+
+    createCheckList(type);
+
+
+    document.getElementById(
+        "result"
+    ).style.display =
         "block";
 
 
-
-    /*
-    結果まで移動
-    */
-
-    document.getElementById("result").scrollIntoView({
+    document.getElementById(
+        "result"
+    ).scrollIntoView({
         behavior: "smooth"
     });
 
@@ -1196,41 +1784,306 @@ ${note}
 
 
 
-/*
-コピー機能
-*/
+/* =========================================
+   更新先チェックリスト
+========================================= */
 
-function copyText(textId, messageId) {
+function createCheckList(type) {
 
-    const text =
-        document.getElementById(textId).value;
+    let list = [
+
+        "ホームページのお知らせ",
+
+        "Googleビジネスプロフィール",
+
+        "LINE・SNS"
+
+    ];
 
 
-    navigator.clipboard.writeText(text)
-        .then(function() {
+    if (
+        type === "営業時間変更"
+    ) {
 
-            document.getElementById(messageId).textContent =
-                "コピーしました。";
+        list.push(
+            "ホームページの営業時間欄"
+        );
 
-        })
-        .catch(function() {
+        list.push(
+            "Googleの営業時間設定"
+        );
 
-            const textarea =
-                document.getElementById(textId);
+        list.push(
+            "予約サイトの営業時間"
+        );
 
-            textarea.select();
+        list.push(
+            "店頭掲示・営業時間案内"
+        );
 
-            document.execCommand("copy");
+    }
 
-            document.getElementById(messageId).textContent =
-                "コピーしました。";
 
-        });
+    else if (
+        type === "定休日変更"
+    ) {
+
+        list.push(
+            "ホームページの定休日欄"
+        );
+
+        list.push(
+            "Googleの営業時間・定休日設定"
+        );
+
+        list.push(
+            "予約サイトの営業日設定"
+        );
+
+    }
+
+
+    else if (
+        type === "料金変更"
+    ) {
+
+        list.push(
+            "ホームページの料金表"
+        );
+
+        list.push(
+            "予約サイトの料金"
+        );
+
+        list.push(
+            "メニュー表"
+        );
+
+        list.push(
+            "店頭の料金表示"
+        );
+
+    }
+
+
+    else if (
+        type === "移転"
+    ) {
+
+        list.push(
+            "ホームページの住所"
+        );
+
+        list.push(
+            "ホームページのアクセス案内"
+        );
+
+        list.push(
+            "Googleビジネスプロフィールの住所"
+        );
+
+        list.push(
+            "予約サイトの住所"
+        );
+
+        list.push(
+            "SNSプロフィールの住所"
+        );
+
+    }
+
+
+    else if (
+        type === "新サービス"
+    ) {
+
+        list.push(
+            "ホームページのサービス一覧"
+        );
+
+        list.push(
+            "料金・メニュー表"
+        );
+
+        list.push(
+            "予約サイトのメニュー"
+        );
+
+    }
+
+
+    else if (
+        type === "臨時休業"
+    ) {
+
+        list.push(
+            "ホームページのお知らせ"
+        );
+
+        list.push(
+            "Googleビジネスプロフィール"
+        );
+
+        list.push(
+            "SNS・LINE"
+        );
+
+        list.push(
+            "予約済みのお客様への案内"
+        );
+
+    }
+
+
+    const ul =
+        document.getElementById(
+            "checkList"
+        );
+
+
+    ul.innerHTML = "";
+
+
+    list.forEach(
+        function(item, index) {
+
+            const li =
+                document.createElement(
+                    "li"
+                );
+
+
+            li.innerHTML = `
+
+                <label
+                    style="
+                        margin:0;
+                        font-weight:normal;
+                    "
+                >
+
+                    <input
+                        type="checkbox"
+                    >
+
+                    ${index + 1}.
+                    ${escapeHtml(item)}
+
+                </label>
+
+            `;
+
+
+            ul.appendChild(li);
+
+        }
+    );
+
+}
+
+
+
+/* =========================================
+   コピー
+========================================= */
+
+function copyText(
+    textId,
+    messageId
+) {
+
+    const textarea =
+        document.getElementById(
+            textId
+        );
+
+
+    if (
+        navigator.clipboard &&
+        window.isSecureContext
+    ) {
+
+        navigator.clipboard
+            .writeText(
+                textarea.value
+            )
+
+            .then(
+                function() {
+
+                    document.getElementById(
+                        messageId
+                    ).textContent =
+                        "コピーしました。";
+
+                }
+            )
+
+            .catch(
+                function() {
+
+                    fallbackCopy(
+                        textarea,
+                        messageId
+                    );
+
+                }
+            );
+
+    }
+
+    else {
+
+        fallbackCopy(
+            textarea,
+            messageId
+        );
+
+    }
+
+}
+
+
+
+/* =========================================
+   コピーの予備処理
+========================================= */
+
+function fallbackCopy(
+    textarea,
+    messageId
+) {
+
+    textarea.focus();
+
+    textarea.select();
+
+    try {
+
+        document.execCommand(
+            "copy"
+        );
+
+        document.getElementById(
+            messageId
+        ).textContent =
+            "コピーしました。";
+
+    }
+
+    catch (error) {
+
+        document.getElementById(
+            messageId
+        ).textContent =
+            "コピーできませんでした。";
+
+    }
 
 }
 
 </script>
 
-
 </body>
 </html>
+```
